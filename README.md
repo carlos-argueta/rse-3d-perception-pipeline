@@ -32,6 +32,7 @@ ros2 launch s1s2_r1_perception perception_launch.py
 ```
 
 ### With ROS Bag
+Download bag here: https://www.dropbox.com/scl/fi/tdxin6bzw01siucdv3kgv/linkou-2023-12-27-2-med.zip?rlkey=rcz93bhozjsdymcpn5dqz6rly&dl=0
 
 Since this project is designed to run with recorded data, ensure you play your ROS bag with the `--clock` argument:
 ```bash
