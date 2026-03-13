@@ -47,7 +47,7 @@ MANIFEST
 
 # Pixi environment and task artifacts
 .pixi/                 # Ignore the local virtual environment 
-pixi.lock              
+# pixi.lock              
 
 # Gemini CLI & AI Assistant tracking
 .gemini/               # Local Gemini CLI configuration or history

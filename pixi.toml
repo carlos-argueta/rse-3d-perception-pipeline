@@ -1,7 +1,8 @@
 [workspace]
 name = "rse-3d-perception-pipeline"
 channels = ["robostack-jazzy", "conda-forge"]
-platforms = ["linux-64"]
+# Added support for Lunux, Windows, macOS (Intel), and macOS (Apple Silicon)
+platforms = ["linux-64", "win-64", "osx-64", "osx-arm64"]
 
 [dependencies]
 ros-jazzy-desktop = "*"
@@ -18,13 +19,7 @@ ultralytics = "*"
 open3d = "*"
 numpy = "*"
 opencv = ">=4.12.0,<5"
-# Force CPU builds to save space (Standard PyTorch is huge)
-pytorch = { version = "2.*", build = "*cpu*" }
-torchvision = { version = "0.*", build = "*cpu*" }
 
-[tasks]
-# Build from the root of the project
-build = "cd ros2_ws && colcon build --symlink-install"
+pytorch = ">=2.0"
+torchvision = ">=0.15"
 
-# Launch using a bash subshell to ensure environment variables are exported correctly
-launch = { cmd = "bash -c 'source ros2_ws/install/setup.bash && ros2 launch s1s2_r1_perception perception.launch.py'" }
