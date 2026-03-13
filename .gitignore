@@ -49,10 +49,8 @@ MANIFEST
 .pixi/                 # Ignore the local virtual environment 
 # pixi.lock              
 
-# Gemini CLI & AI Assistant tracking
-.gemini/               # Local Gemini CLI configuration or history
-.google_genai/         # Generative AI local state
-.abstra/               # AI-powered process automation state [cite: 19]
+# Gemini
+.gemini/
 
 # AI Context and Indexing
 .cursorignore          # Already in your file, helps exclude data from AI analysis [cite: 21, 22]
