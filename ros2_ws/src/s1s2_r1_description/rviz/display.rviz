@@ -6,9 +6,11 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /rplidar1
+        - /TF1
+        - /Detections1/Topic1
+        - /Detection3DArray1
       Splitter Ratio: 0.5
-    Tree Height: 413
+    Tree Height: 79
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -72,15 +74,6 @@ Visualization Manager:
           Show Trail: false
           Value: true
         base_battery:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base_footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        base_laser:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -211,6 +204,11 @@ Visualization Manager:
           Show Trail: false
           Value: true
         imu_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lidar_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -351,13 +349,17 @@ Visualization Manager:
         All Enabled: true
         armario:
           Value: true
+        base:
+          Value: true
         base_battery:
           Value: true
-        base_footprint:
+        base_imu_link:
           Value: true
         base_laser:
           Value: true
         base_link:
+          Value: true
+        base_ultrasound0:
           Value: true
         base_ultrasound1:
           Value: true
@@ -366,6 +368,8 @@ Visualization Manager:
         base_ultrasound11:
           Value: true
         base_ultrasound2:
+          Value: true
+        base_ultrasound3:
           Value: true
         base_ultrasound4:
           Value: true
@@ -409,7 +413,11 @@ Visualization Manager:
           Value: true
         imu_link:
           Value: true
+        lidar_link:
+          Value: true
         lidar_plate_link:
+          Value: true
+        map:
           Value: true
         ml_horizontal_arm:
           Value: true
@@ -467,94 +475,105 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_footprint:
-          base_link:
-            armario:
-              front_left_pillar_link:
+        base_link:
+          armario:
+            front_left_pillar_link:
+              {}
+            front_right_pillar_link:
+              {}
+            gnss_bar_link:
+              gnss_base:
                 {}
-              front_right_pillar_link:
+              gnss_heading:
                 {}
-              gnss_bar_link:
-                gnss_base:
+            lidar_plate_link:
+              rslidar:
+                {}
+            rear_left_pillar_link:
+              {}
+            rear_right_pillar_link:
+              {}
+            zed2_camera_link:
+              zed2_camera_center:
+                zed2_imu_link:
                   {}
-                gnss_heading:
-                  {}
-              lidar_plate_link:
-                rslidar:
-                  {}
-              rear_left_pillar_link:
-                {}
-              rear_right_pillar_link:
-                {}
-              zed2_camera_link:
-                zed2_camera_center:
-                  zed2_imu_link:
+                zed2_left_camera_frame:
+                  zed2_left_camera_optical_frame:
                     {}
-                  zed2_left_camera_frame:
-                    zed2_left_camera_optical_frame:
-                      {}
-                  zed2_right_camera_frame:
-                    zed2_right_camera_optical_frame:
-                      {}
-            base_battery:
+                zed2_right_camera_frame:
+                  zed2_right_camera_optical_frame:
+                    {}
+          base:
+            {}
+          base_battery:
+            {}
+          base_imu_link:
+            {}
+          base_laser:
+            {}
+          base_ultrasound0:
+            {}
+          base_ultrasound1:
+            {}
+          base_ultrasound10:
+            {}
+          base_ultrasound11:
+            {}
+          base_ultrasound2:
+            {}
+          base_ultrasound3:
+            {}
+          base_ultrasound4:
+            {}
+          base_ultrasound5:
+            {}
+          base_ultrasound7:
+            {}
+          base_ultrasound8:
+            {}
+          bumper_holder_left_link:
+            bumper_bar_link:
               {}
-            base_laser:
-              {}
-            base_ultrasound1:
-              {}
-            base_ultrasound10:
-              {}
-            base_ultrasound11:
-              {}
-            base_ultrasound2:
-              {}
-            base_ultrasound4:
-              {}
-            base_ultrasound5:
-              {}
-            base_ultrasound7:
-              {}
-            base_ultrasound8:
-              {}
-            bumper_holder_left_link:
-              bumper_bar_link:
+          bumper_holder_right_link:
+            {}
+          fl_horizontal_arm:
+            fl_vertical_upright:
+              fl_wheel:
                 {}
-            bumper_holder_right_link:
-              {}
-            fl_horizontal_arm:
-              fl_vertical_upright:
-                fl_wheel:
-                  {}
-            fl_support_pillar_link:
-              {}
-            fr_horizontal_arm:
-              fr_vertical_upright:
-                fr_wheel:
-                  {}
-            fr_support_pillar_link:
-              {}
-            imu_link:
-              {}
-            ml_horizontal_arm:
-              ml_vertical_upright:
-                ml_wheel:
-                  {}
-            mr_horizontal_arm:
-              mr_vertical_upright:
-                mr_wheel:
-                  {}
-            rl_horizontal_arm:
-              rl_vertical_upright:
-                rl_wheel:
-                  {}
-            rl_support_pillar_link:
-              {}
-            rr_horizontal_arm:
-              rr_vertical_upright:
-                rr_wheel:
-                  {}
-            rr_support_pillar_link:
-              {}
+          fl_support_pillar_link:
+            {}
+          fr_horizontal_arm:
+            fr_vertical_upright:
+              fr_wheel:
+                {}
+          fr_support_pillar_link:
+            {}
+          imu_link:
+            {}
+          lidar_link:
+            {}
+          ml_horizontal_arm:
+            ml_vertical_upright:
+              ml_wheel:
+                {}
+          mr_horizontal_arm:
+            mr_vertical_upright:
+              mr_wheel:
+                {}
+          rl_horizontal_arm:
+            rl_vertical_upright:
+              rl_wheel:
+                {}
+          rl_support_pillar_link:
+            {}
+          rr_horizontal_arm:
+            rr_vertical_upright:
+              rr_wheel:
+                {}
+          rr_support_pillar_link:
+            {}
+        map:
+          {}
         odom:
           {}
       Update Interval: 0
@@ -564,67 +583,34 @@ Visualization Manager:
       Max Value: 1
       Median window: 5
       Min Value: 0
-      Name: ZedRGB
+      Name: Detections
       Normalize Range: true
       Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /zed2/zed_node/rgb/color/rect/image
-      Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz_default_plugins/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: RGB8
-      Decay Time: 0
-      Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 4096
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: ZedPC
-      Position Transformer: XYZ
-      Selectable: true
-      Size (Pixels): 5
-      Size (m): 0.05000000074505806
-      Style: Flat Squares
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /zed2/zed_node/point_cloud/cloud_registered
-      Use Fixed Frame: true
-      Use rainbow: true
+        Value: /detection/camera_annotated
       Value: true
     - Class: rviz_default_plugins/Image
       Enabled: true
       Max Value: 1
       Median window: 5
       Min Value: 0
-      Name: Image
+      Name: BEV
       Normalize Range: false
       Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /zed2/zed_node/depth/depth_registered
+        Value: /visualization/bev_image
       Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 16.83842658996582
-        Min Value: -0.7991328239440918
+        Max Value: 40.5452766418457
+        Min Value: -3.0989789962768555
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -649,43 +635,27 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /rslidar
+        Value: /rslidar_points
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
     - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz_default_plugins/LaserScan
-      Color: 26; 95; 180
-      Color Transformer: FlatColor
-      Decay Time: 0
+      Class: vision_msgs_rviz_plugins/Detection3DArray
+      ConfigPath: ""
       Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 18
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: rplidar
-      Position Transformer: XYZ
-      Selectable: true
-      Size (Pixels): 5
-      Size (m): 0.10000000149011612
-      Style: Flat Squares
+      Lifetime: 0
+      Line Width: 0.05000000074505806
+      Name: Detection3DArray
+      Namespaces:
+        {}
+      Only Edge: true
+      Show Score: false
       Topic:
         Depth: 5
         Durability Policy: Volatile
-        Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /scan
-      Use Fixed Frame: true
-      Use rainbow: true
+        Value: /detection/lidar_clusters
       Value: true
   Enabled: true
   Global Options:
@@ -733,35 +703,37 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 16.311037063598633
+      Distance: 30.239845275878906
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.4403877854347229
-        Y: -2.401707649230957
-        Z: 5.974046230316162
+        X: -2.7780652046203613
+        Y: -0.4106574058532715
+        Z: 1.9776850938796997
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5247977375984192
+      Pitch: 0.8747977018356323
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.1535563468933105
+      Yaw: 3.223555326461792
     Saved: ~
 Window Geometry:
+  BEV:
+    collapsed: false
+  Detections:
+    collapsed: false
   Displays:
     collapsed: false
   Height: 1531
   Hide Left Dock: false
   Hide Right Dock: true
-  Image:
-    collapsed: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000032500000559fc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005d00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003f0000026b000000cc00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000a0049006d00610067006501000002b0000001800000001700fffffffb0000000c005a006500640052004700420100000436000001620000001700fffffffb0000000a0049006d0061006700650100000351000002470000000000000000fb0000000a0049006d00610067006500000003b7000001e10000000000000000000000010000010f0000035afc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d0000035a000000a900fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000009be0000003efc0100000002fb0000000800540069006d00650100000000000009be0000026f00fffffffb0000000800540069006d00650100000000000004500000000000000000000006930000055900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000003250000055dfc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000011a000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb00000006004200450056010000015d000002ac0000001600fffffffb000000140044006500740065006300740069006f006e0073010000040f0000018b0000001600fffffffb0000000a0049006d0061006700650100000351000002470000000000000000fb0000000a0049006d00610067006500000003b7000001e10000000000000000000000010000010f0000035afc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d0000035a000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000009be0000003efc0100000002fb0000000800540069006d00650100000000000009be0000026600fffffffb0000000800540069006d00650100000000000004500000000000000000000006930000055d00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -773,5 +745,3 @@ Window Geometry:
   Width: 2494
   X: 66
   Y: 32
-  ZedRGB:
-    collapsed: false

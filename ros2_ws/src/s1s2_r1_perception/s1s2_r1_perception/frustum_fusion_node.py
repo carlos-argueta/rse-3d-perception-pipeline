@@ -15,7 +15,7 @@ class FrustumFusionNode(Node):
         # Parameters
         self.declare_parameter('lidar_frame', 'rslidar')
         self.declare_parameter('camera_frame', 'zed2_left_camera_optical_frame')
-        self.declare_parameter('match_radius', 150.0) # Search radius in pixels
+        self.declare_parameter('match_radius', 50.0) # Search radius in pixels
         
         self.lidar_frame = self.get_parameter('lidar_frame').value
         self.camera_frame = self.get_parameter('camera_frame').value

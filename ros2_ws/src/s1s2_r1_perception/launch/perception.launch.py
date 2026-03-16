@@ -11,7 +11,7 @@ def generate_launch_description():
     
     # 1. Robot State Publisher (from s1s2_r1_description)
     pkg_description = get_package_share_directory('s1s2_r1_description')
-    xacro_file = os.path.join(pkg_description, 'urdf', 'r1.urdf.xacro')
+    xacro_file = os.path.join(pkg_description, 'urdf', 'r1_fixed.urdf.xacro')
     robot_description_config = xacro.process_file(xacro_file)
     robot_description = robot_description_config.toxml()
 
@@ -62,10 +62,28 @@ def generate_launch_description():
         parameters=[{'use_sim_time': True}]
     )
 
+    # 6. RViz2 Node
+    # Get path to rviz config
+    rviz_config_file = PathJoinSubstitution([
+        FindPackageShare('s1s2_r1_description'),
+        'rviz',
+        'display.rviz'
+    ])
+    
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', rviz_config_file],
+        parameters=[{'use_sim_time': True}]
+    )
+    
     return LaunchDescription([
         robot_state_publisher,
         lidar_node,
         camera_node,
         fusion_node,
-        bev_node
+        bev_node,
+        rviz_node
     ])

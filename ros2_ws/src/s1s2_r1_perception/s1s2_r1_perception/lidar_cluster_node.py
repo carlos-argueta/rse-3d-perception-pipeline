@@ -45,7 +45,7 @@ class LidarClusterNode(Node):
         if points.size == 0:
             return
         
-        self.get_logger().info(f'Received PointCloud with {points.shape[0]} points.')
+        # self.get_logger().info(f'Received PointCloud with {points.shape[0]} points.')
         
             
         pcd = o3d.geometry.PointCloud()
@@ -71,7 +71,7 @@ class LidarClusterNode(Node):
         # 4. Extract Clusters (Euclidean Clustering)
         labels = np.array(pcd_no_ground.cluster_dbscan(eps=self.cluster_tol, min_points=self.min_cluster, print_progress=False))
 
-        self.get_logger().info(f'Found {labels.max() + 1} clusters (labels: {labels})')
+        # self.get_logger().info(f'Found {labels.max() + 1} clusters (labels: {labels})')
 
         # Prepare Detection3DArray
         detections = Detection3DArray()
@@ -97,8 +97,8 @@ class LidarClusterNode(Node):
             hypothesis = ObjectHypothesisWithPose()
 
             hp = ObjectHypothesis()
-            hp.class_id = f'cluster_{i}'  # Placeholder class
-            hp.score = 1.0  # Placeholder score
+            hp.class_id = f'cluster_{i}'
+            hp.score = 1.0
             hypothesis.hypothesis = hp
             
             
