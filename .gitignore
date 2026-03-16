@@ -17,6 +17,9 @@ build/
 install/
 log/
 
+# Manually cloned dependencies (built from source)
+ros2_ws/src/vision_msgs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
