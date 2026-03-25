@@ -6,8 +6,6 @@ from vision_msgs.msg import Detection3DArray, Detection3D, BoundingBox3D, Object
 from geometry_msgs.msg import Pose, PoseWithCovariance 
 import open3d as o3d
 import numpy as np
-import struct
-import array
 
 class LidarClusterNode(Node):
     def __init__(self):
@@ -40,6 +38,13 @@ class LidarClusterNode(Node):
         self.get_logger().info('Lidar Cluster Node started.')
 
     def listener_callback(self, msg):
+        # Live-update parameters from the ROS 2 server
+        self.voxel_size = self.get_parameter('voxel_size').value
+        self.ground_dist = self.get_parameter('ground_distance_threshold').value
+        self.cluster_tol = self.get_parameter('cluster_tolerance').value
+        self.min_cluster = self.get_parameter('min_cluster_size').value
+        self.max_cluster = self.get_parameter('max_cluster_size').value
+
         # 1. Convert ROS PointCloud2 to Open3D PointCloud
         points = self.pointcloud2_to_numpy(msg)
         if points.size == 0:
@@ -47,7 +52,6 @@ class LidarClusterNode(Node):
         
         # self.get_logger().info(f'Received PointCloud with {points.shape[0]} points.')
         
-            
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(points)
 
@@ -132,25 +136,26 @@ class LidarClusterNode(Node):
         self.no_ground_pub.publish(no_ground_msg)
 
     def pointcloud2_to_numpy(self, msg):
-        # Extract points from PointCloud2 message
-        # Format: (x, y, z, intensity, ...)
-        # We only need x, y, z
+        # 1. Create a generator for the points
         gen = point_cloud2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
         
-        # Convert generator to a list of tuples, then to a structured array
-        points_list = list(gen)
-        if not points_list:
-            return np.zeros((0, 3), dtype=np.float32)
-            
-        # Create a structured array and then extract fields to get a standard Nx3 array
-        # This is more robust than a direct cast
-        structured_data = np.array(points_list)
-        points = np.stack([structured_data['x'], structured_data['y'], structured_data['z']], axis=1).astype(np.float32)
+        # 2. Define the data type for the generator (3 floats for x, y, z)
+        # We use a structured dtype to match the generator's output
+        dtype = [('x', np.float32), ('y', np.float32), ('z', np.float32)]
         
-        if points.size > 0:
-            # Filter NaNs and Inf
+        # 3. Use fromiter to pull data directly into NumPy without creating a Python list
+        structured_array = np.fromiter(gen, dtype=dtype)
+        
+        # 4. Convert the structured array to a standard Nx3 float32 array
+        # .view transforms the memory layout without copying the data
+        if structured_array.size > 0:
+            points = structured_array.view(np.float32).reshape(-1, 3)
+            
+            # 5. Final safety check for invalid numbers
             points = points[np.isfinite(points).all(axis=1)]
-        return points
+            return points
+        
+        return np.zeros((0, 3), dtype=np.float32)
 
     def numpy_to_pointcloud2(self, points, header):
         # Create PointCloud2 from numpy array (Nx3)

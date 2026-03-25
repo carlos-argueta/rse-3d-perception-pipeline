@@ -107,13 +107,17 @@ class FrustumFusionNode(Node):
                     best_match = det_2d
 
             # 4. Update 3D detection with class if matched
+            hypothesis = det_3d.results[0] if det_3d.results else ObjectHypothesisWithPose() 
             if best_match is not None:
                 det_fused = det_3d # Copy 3D detection
                 # Map YOLO class results
                 for res_2d in best_match.results:
-                    hypothesis = ObjectHypothesisWithPose()
                     hypothesis.hypothesis.class_id = res_2d.hypothesis.class_id
                     hypothesis.hypothesis.score = res_2d.hypothesis.score
+
+                    # Update pose with 3D detection pose
+                    # hypothesis.pose = det_3d.bbox.center
+
                     det_fused.results.append(hypothesis)
                 fused_detections.detections.append(det_fused)
 
