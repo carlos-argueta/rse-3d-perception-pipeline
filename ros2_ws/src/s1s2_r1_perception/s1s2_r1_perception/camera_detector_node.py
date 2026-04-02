@@ -37,14 +37,17 @@ class CameraDetectorNode(Node):
         self.get_logger().info(f'Camera Detector Node started with model: {model_path}')
 
     def listener_callback(self, msg):
-        # Convert ROS Image to OpenCV
+        # Live-update parameters from the ROS 2 server
+        self.conf_threshold = self.get_parameter('conf_threshold').value
+
+        # 1. Convert ROS Image to OpenCV
         try:
             cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         except Exception as e:
             self.get_logger().error(f'Could not convert image: {e}')
             return
 
-        # Run Inference (CPU mode by default)
+        # 2. Run Inference (CPU mode by default)
         results = self.model.predict(cv_image, conf=self.conf_threshold, verbose=False)
 
         # Prepare Detection2DArray
