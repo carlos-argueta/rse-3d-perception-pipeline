@@ -1,7 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import CameraInfo
-from vision_msgs.msg import Detection3DArray, Detection2DArray, Detection3D, ObjectHypothesisWithPose
+from vision_msgs.msg import Detection3DArray, Detection2DArray, ObjectHypothesisWithPose
 from geometry_msgs.msg import PointStamped
 import tf2_ros
 import tf2_geometry_msgs
@@ -25,14 +24,7 @@ class FrustumFusionNode(Node):
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
 
-        # Camera Info Subscription
-        self.info_sub = self.create_subscription(
-            CameraInfo,
-            '/zed2/zed/rgb/camera_info',
-            self.info_callback,
-            10)
-        self.camera_info = None
-        self.K = None
+        # Camera intrinsics matrix K
         self.K = np.array([
             [267.0,   0.0, 320.0],
             [  0.0, 267.0, 180.0],
@@ -52,11 +44,10 @@ class FrustumFusionNode(Node):
         
         self.get_logger().info('Frustum Fusion Node started.')
 
-    def info_callback(self, msg):
-        self.camera_info = msg
-        self.K = np.array(msg.k).reshape((3, 3))
-
     def fused_callback(self, lidar_msg, camera_msg):
+        # Live-update parameters from the ROS 2 server
+        self.match_radius = self.get_parameter('match_radius').value
+
         if self.K is None:
             self.get_logger().warn('No camera info received yet.')
             return
@@ -109,16 +100,16 @@ class FrustumFusionNode(Node):
             # 4. Update 3D detection with class if matched
             hypothesis = det_3d.results[0] if det_3d.results else ObjectHypothesisWithPose() 
             if best_match is not None:
-                det_fused = det_3d # Copy 3D detection
+                det_fused = det_3d # Use the original 3D spatial data
                 # Map YOLO class results
                 for res_2d in best_match.results:
                     hypothesis.hypothesis.class_id = res_2d.hypothesis.class_id
                     hypothesis.hypothesis.score = res_2d.hypothesis.score
 
-                    # Update pose with 3D detection pose
-                    # hypothesis.pose = det_3d.bbox.center
-
+                    # Attach the semantic identity to the 3D cluster
                     det_fused.results.append(hypothesis)
+
+                # Add to the final list of fused objects
                 fused_detections.detections.append(det_fused)
 
         self.fused_pub.publish(fused_detections)
