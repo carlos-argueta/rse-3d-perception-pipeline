@@ -1,5 +1,6 @@
 import rclpy
 from rclpy.node import Node
+from sensor_msgs_py import point_cloud2
 from sensor_msgs.msg import PointCloud2, Image
 from vision_msgs.msg import Detection3DArray
 from cv_bridge import CvBridge
@@ -95,17 +96,26 @@ class BEVVisualizerNode(Node):
         self.bev_pub.publish(bev_msg)
 
     def pointcloud2_to_numpy(self, msg):
-        fmt = 'f' * 3
-        point_step = msg.point_step
-        data = msg.data
-        points = []
-        for i in range(0, len(data), point_step):
-            try:
-                x, y, z = struct.unpack_from('fff', data, i)
-                points.append([x, y, z])
-            except:
-                continue
-        return np.array(points, dtype=np.float32)
+        # 1. Create a generator for the points
+        gen = point_cloud2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
+        
+        # 2. Define the data type for the generator (3 floats for x, y, z)
+        # We use a structured dtype to match the generator's output
+        dtype = [('x', np.float32), ('y', np.float32), ('z', np.float32)]
+        
+        # 3. Use fromiter to pull data directly into NumPy without creating a Python list
+        structured_array = np.fromiter(gen, dtype=dtype)
+        
+        # 4. Convert the structured array to a standard Nx3 float32 array
+        # .view transforms the memory layout without copying the data
+        if structured_array.size > 0:
+            points = structured_array.view(np.float32).reshape(-1, 3)
+            
+            # 5. Final safety check for invalid numbers
+            points = points[np.isfinite(points).all(axis=1)]
+            return points
+        
+        return np.zeros((0, 3), dtype=np.float32)
 
 def main(args=None):
     rclpy.init(args=args)
