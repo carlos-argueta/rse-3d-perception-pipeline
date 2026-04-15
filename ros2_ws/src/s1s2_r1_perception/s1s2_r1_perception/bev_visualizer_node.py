@@ -6,7 +6,6 @@ from vision_msgs.msg import Detection3DArray
 from cv_bridge import CvBridge
 import numpy as np
 import cv2
-import struct
 
 class BEVVisualizerNode(Node):
     def __init__(self):
@@ -59,9 +58,10 @@ class BEVVisualizerNode(Node):
         y_pix = ((self.range_x - points[:, 0]) / self.resolution).astype(np.int32)
 
         # 4. Draw BEV
+        # Create black image
         bev_img = np.zeros((self.height, self.width, 3), dtype=np.uint8)
         
-        # Valid pixels
+        # Draw LiDAR points as grey pixels
         valid_mask = (x_pix >= 0) & (x_pix < self.width) & (y_pix >= 0) & (y_pix < self.height)
         bev_img[y_pix[valid_mask], x_pix[valid_mask]] = [200, 200, 200]
 
