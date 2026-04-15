@@ -46,4 +46,4 @@ ros2 bag play <your_bag_file> --clock
 
 ## License
 
-TODO: Add license.
+MIT License
